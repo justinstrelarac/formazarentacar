@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="sr-Latn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Strela Agency · Da li automatizacija ima smisla za Vašu agenciju?</title>
+<meta name="description" content="Kratak upitnik za rent a car agencije. Popunjavanje traje 2 minuta.">
+<meta name="theme-color" content="#07090c">
+<meta name="robots" content="noindex">
+<meta name="format-detection" content="telephone=no">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235b9bff' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M12 1v22M1 12h22M4.2 4.2l15.6 15.6M19.8 4.2 4.2 19.8'/%3E%3C/svg%3E">
+<style>
+:root{
+  --bg:#07090c; --surface:#0c1016; --surface-2:#111720; --line:rgba(255,255,255,.08); --line-2:rgba(255,255,255,.14);
+  --text:#e9eef5; --muted:#9aa6b6; --faint:#7d8898;
+  --blue:oklch(0.72 0.15 252); --blue-strong:oklch(0.56 0.2 258); --blue-glow:oklch(0.62 0.2 256 / .35);
+  --err:oklch(0.76 0.15 25);
+  --ease:cubic-bezier(.2,.7,.2,1);
+  /* mobile-first */
+  --pad:1rem;              /* bočna margina stranice */
+  --cpad:0rem;             /* unutrašnji padding kartice (na telefonu kartica nema okvir) */
+  --maxw:40rem;
+  --sticky-bg:rgba(7,9,12,.96);
+  --prog-h:3.5rem; --nav-h:5rem;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;scroll-padding-top:calc(var(--prog-h) + 1rem);scroll-padding-bottom:calc(var(--nav-h) + 1rem)}
+body{min-height:100dvh;overflow-x:clip;background-color:var(--bg);color:var(--text);font:400 1rem/1.55 Geist,system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
+a{color:var(--blue);text-decoration:none} a:hover{color:#fff;text-decoration:underline;text-underline-offset:3px}
+:focus-visible{outline:2px solid var(--blue);outline-offset:3px;border-radius:6px}
+button,input,textarea{font:inherit;color:inherit}
+.wrap{width:100%;max-width:calc(var(--maxw) + var(--pad)*2);margin:0 auto;padding:max(1rem,env(safe-area-inset-top)) max(var(--pad),env(safe-area-inset-right)) max(1.5rem,env(safe-area-inset-bottom)) max(var(--pad),env(safe-area-inset-left));min-height:100dvh;display:flex;flex-direction:column}
+main{flex:1}
+header.brand{display:flex;align-items:center;gap:.5rem;font-weight:600;letter-spacing:-.01em;font-size:.875rem}
+header.brand svg{width:1.375rem;height:1.375rem;flex:none;color:var(--blue)}
+
+.card{margin-top:clamp(1.25rem,3vw,2rem);background:transparent;border:0;border-radius:1.25rem;padding:0 var(--cpad) var(--cpad)}
+#progress{position:sticky;top:0;z-index:5;margin:0 calc(-1*var(--pad));padding:.75rem var(--pad) .875rem;background:var(--sticky-bg);border-bottom:1px solid var(--line)}
+.prog-top{display:flex;justify-content:space-between;align-items:baseline;gap:.75rem;font-size:.875rem;line-height:1.3;color:var(--muted)}
+.prog-top span:first-child{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.prog-top span:last-child{color:var(--text);flex:none}
+.bar{margin-top:.625rem;height:.25rem;background:var(--surface-2);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;width:100%;transform-origin:left;transform:scaleX(.3333);background:var(--blue);border-radius:inherit;transition:transform .6s var(--ease);will-change:transform}
+
+.step{margin-top:1.5rem}
+.step h2{font-size:clamp(1.25rem,1.1rem + .6vw,1.5rem);letter-spacing:-.015em;font-weight:600;outline:none;scroll-margin-top:calc(var(--prog-h) + 1.25rem)}
+.fields{display:grid;gap:1.5rem;margin-top:1.25rem;grid-template-columns:minmax(0,1fr)}
+.row{display:grid;gap:1.5rem;grid-template-columns:minmax(0,1fr)}
+.f{min-width:0;scroll-margin-top:calc(var(--prog-h) + 1.25rem);scroll-margin-bottom:calc(var(--nav-h) + 1rem)}
+.f label:not(.chip),.f legend{display:block;font-weight:500;font-size:1rem;line-height:1.35;margin-bottom:.625rem;padding:0}
+.opt{color:var(--faint);font-weight:400;font-size:.8125rem;margin-left:.375rem;white-space:nowrap}
+.req{color:var(--blue);margin-left:.125rem}
+fieldset{border:0;padding:0;min-width:0}
+input[type=text],input[type=email],input[type=tel],textarea{display:block;width:100%;font-size:max(1rem,16px);color:var(--text);background:var(--surface-2);border:1px solid var(--line-2);border-radius:.75rem;padding:.8125rem .875rem;min-height:3.25rem;transition:border-color .2s,box-shadow .25s var(--ease),background-color .2s;-webkit-appearance:none;appearance:none}
+textarea{min-height:7rem;resize:vertical;line-height:1.5}
+input::placeholder,textarea::placeholder{color:var(--faint);opacity:1}
+input:hover,textarea:hover{border-color:rgba(255,255,255,.22)}
+input:focus,textarea:focus{outline:none;border-color:var(--blue);background-color:#131b26;box-shadow:0 0 0 .25rem oklch(0.62 0.2 256 / .22)}
+[aria-invalid=true]{border-color:var(--err)!important}
+.err{color:var(--err);font-size:.875rem;margin-top:.5rem;display:none}
+.f.has-err .err{display:block;animation:rise .3s var(--ease)}
+
+/* izbori kao kartice */
+.chips{display:grid;gap:.5rem;grid-template-columns:minmax(0,1fr)}
+.chips[data-layout=short]{grid-template-columns:repeat(2,minmax(0,1fr))}
+.chip{position:relative;display:block;min-width:0}
+.chip input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer;z-index:1}
+.chip span{display:flex;align-items:center;gap:.75rem;height:100%;min-height:3.25rem;padding:.75rem 1rem;border:1px solid var(--line-2);border-radius:.75rem;background:var(--surface-2);font-size:1rem;line-height:1.3;color:var(--text);user-select:none;-webkit-user-select:none;transition:background-color .2s,border-color .2s,transform .15s,color .2s}
+.chip span::before{content:"";width:1.125rem;height:1.125rem;flex:none;border:1.5px solid var(--faint);border-radius:50%;transition:background-color .2s,border-color .2s,box-shadow .2s}
+.chip input[type=checkbox]+span::before{border-radius:.3rem}
+@media (hover:hover){.chip:hover span{border-color:rgba(255,255,255,.26)}}
+.chip input:active+span{transform:scale(.98)}
+.chip input:checked+span{background:oklch(0.56 0.2 258 / .18);border-color:var(--blue);color:#fff}
+.chip input:checked+span::before{border-color:var(--blue);background:var(--blue);box-shadow:inset 0 0 0 3px var(--surface-2)}
+.chip input[type=checkbox]:checked+span::before{box-shadow:none;background:var(--blue) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2307090c' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center/80% no-repeat}
+.chip input:focus-visible+span{outline:2px solid var(--blue);outline-offset:2px}
+.has-err .chip span{border-color:oklch(0.76 0.15 25 / .55)}
+
+/* sticky dugmad */
+.nav{position:sticky;bottom:0;z-index:5;display:flex;gap:.625rem;margin:2rem calc(-1*var(--pad)) 0;padding:.75rem var(--pad) max(.75rem,env(safe-area-inset-bottom));background:var(--sticky-bg);border-top:1px solid var(--line);will-change:transform}
+.btn{font-weight:600;font-size:1rem;min-height:3.25rem;padding:0 1.25rem;border-radius:.75rem;border:1px solid transparent;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:.625rem;white-space:nowrap;touch-action:manipulation;transition:background-color .2s,transform .15s,opacity .2s}
+.btn:active{transform:scale(.98)}
+.btn-primary{background:var(--blue-strong);color:#fff;flex:1;min-width:0}
+@media (hover:hover){.btn-primary:hover{background:oklch(0.6 0.2 258)}.btn-primary:hover .arr{transform:translateX(3px)}.btn-ghost:hover{background:var(--surface-2)}}
+.btn-ghost{background:transparent;color:var(--text);border-color:var(--line-2);flex:none}
+.btn[disabled]{opacity:.65;cursor:progress;transform:none}
+.btn .arr{transition:transform .2s var(--ease)}
+.spin{width:1rem;height:1rem;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none}
+.loading .spin{display:inline-block} .loading .arr{display:none}
+.alert{display:none;margin-top:1.25rem;padding:.8125rem .9375rem;border-radius:.75rem;border:1px solid oklch(0.76 0.15 25 / .45);background:oklch(0.76 0.15 25 / .08);color:#ffd9d2;font-size:.9375rem}
+.alert.show{display:block;animation:rise .35s var(--ease)}
+.alert a{color:#fff;text-decoration:underline}
+.hp{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
+
+.done{padding:1.5rem 0 .5rem}
+.done .mark{width:3.25rem;height:3.25rem;border-radius:50%;display:grid;place-items:center;background:oklch(0.56 0.2 258 / .16);border:1px solid var(--blue);color:var(--blue);}
+.done h2{margin-top:1.375rem;font-size:clamp(1.375rem,1.2rem + .8vw,1.75rem);letter-spacing:-.02em;font-weight:600;line-height:1.25;text-wrap:balance;outline:none}
+.done p{margin-top:.875rem;color:var(--muted);font-size:.875rem}
+.done p a{color:var(--text)}
+footer{margin-top:2.5rem;display:flex;flex-wrap:wrap;gap:.375rem .625rem;justify-content:center;font-size:.875rem;color:var(--faint);text-align:center}
+footer a{color:var(--muted);overflow-wrap:anywhere}
+
+.reveal{opacity:0;animation:rise .6s var(--ease) forwards}
+.d1{animation-delay:.05s}.d2{animation-delay:.12s}.d3{animation-delay:.2s}.d4{animation-delay:.28s}
+.step-in{animation:stepIn .4s var(--ease)}
+.step-in-back{animation:stepInBack .4s var(--ease)}
+@keyframes rise{from{opacity:0;transform:translate3d(0,.625rem,0)}to{opacity:1;transform:none}}
+@keyframes stepIn{from{opacity:0;transform:translate3d(1rem,0,0)}to{opacity:1;transform:none}}
+@keyframes stepInBack{from{opacity:0;transform:translate3d(-1rem,0,0)}to{opacity:1;transform:none}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes shake{20%,60%{transform:translateX(-4px)}40%,80%{transform:translateX(4px)}}
+.shake{animation:shake .35s}
+
+/* vrlo uski telefoni (320–359px) */
+@media (max-width:22.4375rem){
+  .chips[data-layout=short]{grid-template-columns:minmax(0,1fr)}
+  .btn{padding:0 1rem}
+}
+/* veći telefoni: kanali u dve kolone */
+@media (min-width:22.5rem){ .chips[data-layout=mid]{grid-template-columns:repeat(2,minmax(0,1fr))} }
+
+/* telefon položeno (niska visina) */
+@media (max-height:31rem) and (orientation:landscape){
+  :root{--prog-h:2.75rem;--nav-h:4rem}
+  #progress{padding-top:.5rem;padding-bottom:.5rem}
+  .bar{margin-top:.375rem}
+  .nav{padding-top:.5rem;padding-bottom:max(.5rem,env(safe-area-inset-bottom))}
+  .btn{min-height:3rem}
+}
+
+/* tablet */
+@media (min-width:40.0625rem){
+  :root{--pad:1.5rem;--cpad:2rem;--maxw:40rem;--prog-h:4rem;--sticky-bg:rgba(12,16,22,.97)}
+  .wrap{padding-top:max(1.75rem,env(safe-area-inset-top))}
+  header.brand{font-size:.9375rem} header.brand svg{width:1.625rem;height:1.625rem}
+  .card{background:var(--surface);border:1px solid var(--line);}
+  #progress{margin:0 calc(-1*var(--cpad));padding:1.25rem var(--cpad) 1rem;border-radius:1.25rem 1.25rem 0 0}
+  .nav{margin:2rem calc(-1*var(--cpad)) calc(-1*var(--cpad));padding:1rem var(--cpad) max(1rem,env(safe-area-inset-bottom));border-radius:0 0 1.25rem 1.25rem}
+  .step{margin-top:1.75rem}
+  .row{grid-template-columns:repeat(2,minmax(0,1fr));gap:1.25rem}
+  .chips,.chips[data-layout=mid]{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .chips[data-layout=short]{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .chips[data-layout=three]{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .btn-ghost{min-width:7.5rem}
+  .done{padding:2rem 0 .5rem}
+}
+/* laptop i veći */
+@media (min-width:64.0625rem){
+  :root{--pad:2rem;--cpad:2.5rem;--maxw:45rem}
+  .wrap{padding-top:2.5rem}
+  
+  .chips[data-layout=mid]{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .chips[data-layout=long]{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (min-width:100rem){ html{font-size:106.25%} }
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  .reveal{opacity:1}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="brand">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" aria-hidden="true">
+      <g stroke-width="1.8"><path d="M12 1v22M1 12h22M4.22 4.22l15.56 15.56M19.78 4.22 4.22 19.78"/></g>
+      <g stroke-width="1.4" opacity=".75"><path d="M15.06 4.61 8.94 19.39M19.39 8.94 4.61 15.06M19.39 15.06 4.61 8.94M15.06 19.39 8.94 4.61"/></g>
+    </svg>
+    <span>Strela Agency</span>
+  </header>
+
+  <main>
+
+    <div class="card" id="card">
+      <form id="form" novalidate>
+        <div id="progress">
+          <div class="prog-top"><span id="stepName">O Vama</span><span id="stepCount">Korak 1/3</span></div>
+          <div class="bar" role="progressbar" aria-label="Napredak" aria-valuemin="1" aria-valuemax="3" aria-valuenow="1" aria-valuetext="Korak 1 od 3" id="bar"><i id="barFill"></i></div>
+        </div>
+
+        <div class="hp" aria-hidden="true">
+          <label for="company_website">Ne popunjavajte ovo polje</label>
+          <input type="text" id="company_website" name="company_website" tabindex="-1" autocomplete="off">
+        </div>
+
+        <section class="step" data-step="1" data-name="O Vama">
+          <h2 tabindex="-1">O Vama</h2>
+          <div class="fields">
+            <div class="f"><label for="ime">Ime i prezime<span class="req" aria-hidden="true">*</span></label>
+              <input type="text" id="ime" name="ime_prezime" autocomplete="name" autocapitalize="words" enterkeyhint="next" required aria-describedby="ime-err">
+              <p class="err" id="ime-err">Unesite ime i prezime.</p></div>
+            <div class="f"><label for="agencija">Naziv agencije<span class="req" aria-hidden="true">*</span></label>
+              <input type="text" id="agencija" name="agencija" autocomplete="organization" enterkeyhint="next" required aria-describedby="agencija-err">
+              <p class="err" id="agencija-err">Unesite naziv agencije.</p></div>
+            <div class="row">
+              <div class="f"><label for="telefon">Telefon / WhatsApp<span class="req" aria-hidden="true">*</span></label>
+                <input type="tel" id="telefon" name="telefon" autocomplete="tel" inputmode="tel" enterkeyhint="next" placeholder="06x xxx xxxx" required aria-describedby="telefon-err">
+                <p class="err" id="telefon-err">Unesite ispravan broj telefona.</p></div>
+              <div class="f"><label for="email">Email<span class="req" aria-hidden="true">*</span></label>
+                <input type="email" id="email" name="email" autocomplete="email" inputmode="email" autocapitalize="off" spellcheck="false" enterkeyhint="next" placeholder="ime@agencija.rs" required aria-describedby="email-err">
+                <p class="err" id="email-err">Unesite ispravnu email adresu (npr. ime@agencija.rs).</p></div>
+            </div>
+            <div class="f"><label for="sajt">Sajt ili Instagram<span class="opt">opciono</span></label>
+              <input type="text" id="sajt" name="sajt_instagram" autocomplete="url" autocapitalize="off" spellcheck="false" enterkeyhint="go" placeholder="www.agencija.rs ili @agencija"></div>
+          </div>
+        </section>
+
+        <section class="step" data-step="2" data-name="Vaše poslovanje" hidden>
+          <h2 tabindex="-1">Vaše poslovanje</h2>
+          <div class="fields">
+            <fieldset class="f" data-group="broj_vozila" data-type="radio" aria-describedby="vozila-err"><legend>Koliko vozila imate?<span class="req" aria-hidden="true">*</span></legend>
+              <div class="chips" data-layout="short" data-opts="1–5|6–15|16–30|preko 30"></div>
+              <p class="err" id="vozila-err">Izaberite jednu opciju.</p></fieldset>
+            <fieldset class="f" data-group="upita_nedeljno" data-type="radio" aria-describedby="upiti-err"><legend>Koliko upita dobijate nedeljno, otprilike?<span class="req" aria-hidden="true">*</span></legend>
+              <div class="chips" data-layout="short" data-opts="do 10|10–30|30–100|preko 100"></div>
+              <p class="err" id="upiti-err">Izaberite jednu opciju.</p></fieldset>
+            <fieldset class="f" data-group="kanali" data-type="checkbox" aria-describedby="kanali-err"><legend>Preko kojih kanala Vam klijenti pišu?<span class="req" aria-hidden="true">*</span><span class="opt">više odgovora</span></legend>
+              <div class="chips" data-layout="mid" data-opts="WhatsApp|Instagram|Viber|Telefon|Sajt|Mejl|Booking/agregatori"></div>
+              <p class="err" id="kanali-err">Izaberite bar jedan kanal.</p></fieldset>
+            <fieldset class="f" data-group="ko_odgovara" data-type="radio" aria-describedby="ko-err"><legend>Ko danas odgovara na upite?<span class="req" aria-hidden="true">*</span></legend>
+              <div class="chips" data-layout="three" data-opts="Ja lično|Jedan zaposleni|Više zaposlenih"></div>
+              <p class="err" id="ko-err">Izaberite jednu opciju.</p></fieldset>
+            <fieldset class="f" data-group="evidencija" data-type="radio" aria-describedby="evid-err"><legend>Kako vodite evidenciju vozila i rezervacija?<span class="req" aria-hidden="true">*</span></legend>
+              <div class="chips" data-layout="long" data-opts="Google kalendar|Excel/Google Sheets|Program za rezervacije|Sveska/papir|Drugo"></div>
+              <p class="err" id="evid-err">Izaberite jednu opciju.</p></fieldset>
+          </div>
+        </section>
+
+        <section class="step" data-step="3" data-name="Šta Vam je najvažnije" hidden>
+          <h2 tabindex="-1">Šta Vam je najvažnije</h2>
+          <div class="fields">
+            <fieldset class="f" data-group="najvise_vremena" data-type="checkbox" aria-describedby="vreme-err"><legend>Šta Vam oduzima najviše vremena?<span class="req" aria-hidden="true">*</span><span class="opt">više odgovora</span></legend>
+              <div class="chips" data-layout="long" data-opts="Odgovaranje na iste poruke|Upiti van radnog vremena|Praćenje ko se nije javio|Rezervacije i dostupnost vozila|Papirologija i dokumenta klijenata|Recenzije i povratni klijenti|Drugo"></div>
+              <p class="err" id="vreme-err">Izaberite bar jednu opciju.</p></fieldset>
+            <div class="f"><label for="napomena">Nešto što bi trebalo da znam?<span class="opt">opciono</span></label>
+              <textarea id="napomena" name="napomena" rows="4"></textarea></div>
+            <fieldset class="f" data-group="termin_poziva" data-type="radio" aria-describedby="termin-err"><legend>Kada Vam najviše odgovara da Vas pozovem?<span class="req" aria-hidden="true">*</span></legend>
+              <div class="chips" data-layout="long" data-opts="Radnim danima pre podne|Radnim danima posle podne|Vikendom"></div>
+              <p class="err" id="termin-err">Izaberite termin.</p></fieldset>
+          </div>
+        </section>
+
+        <div class="alert" id="alert" role="alert"></div>
+
+        <div class="nav" id="navBar">
+          <button type="button" class="btn btn-ghost" id="back" hidden>Nazad</button>
+          <button type="submit" class="btn btn-primary" id="next"><span id="nextLabel">Dalje</span><span class="arr" aria-hidden="true">→</span><span class="spin" aria-hidden="true"></span></button>
+        </div>
+      </form>
+
+      <div class="done" id="done" hidden>
+        <div class="mark" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+        <h2 tabindex="-1">Hvala! Pregledaću Vaše odgovore i javiću Vam se u roku od 24h radnim danima.</h2>
+        <p>Ako je hitno: <a href="tel:+381649426501">064 9426501</a></p>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <span>Strela Agency</span><span aria-hidden="true">·</span>
+    <a href="mailto:justin@strelaagency.com">justin@strelaagency.com</a><span aria-hidden="true">·</span>
+    <a href="tel:+381649426501">064 9426501</a>
+  </footer>
+</div>
+
+<script>
+const WEBHOOK_URL = "OVDE_IDE_MOJ_N8N_WEBHOOK";
+
+(function(){
+  const $ = (s, r=document) => r.querySelector(s);
+  const $$ = (s, r=document) => [...r.querySelectorAll(s)];
+  const form = $('#form'), steps = $$('.step', form), alertBox = $('#alert');
+  const backBtn = $('#back'), nextBtn = $('#next'), nextLabel = $('#nextLabel');
+  const progress = $('#progress'), navBar = $('#navBar'), card = $('#card');
+  const params = new URLSearchParams(location.search);
+  const pAgencija = params.get('agencija') || '', pIzvor = params.get('izvor') || '';
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let current = 1, sending = false;
+
+  $$('fieldset[data-group]').forEach(fs => {
+    const name = fs.dataset.group, type = fs.dataset.type, box = $('.chips', fs);
+    box.dataset.opts.split('|').forEach(v => {
+      const l = document.createElement('label'); l.className = 'chip';
+      l.innerHTML = `<input type="${type}" name="${name}" value="${v}"><span>${v}</span>`;
+      box.appendChild(l);
+    });
+    fs.addEventListener('change', () => clearErr(fs));
+  });
+
+  if (pAgencija) $('#agencija').value = pAgencija;
+
+  // Stvarne visine sticky elemenata -> CSS promenljive (za scroll-padding)
+  const syncSticky = () => {
+    document.documentElement.style.setProperty('--prog-h', progress.offsetHeight + 'px');
+    document.documentElement.style.setProperty('--nav-h', navBar.offsetHeight + 'px');
+  };
+  syncSticky(); addEventListener('resize', syncSticky, {passive:true});
+
+  // iOS: tastatura ne menja layout viewport, pa podižemo sticky dugmad iznad nje
+  if (window.visualViewport) {
+    const vv = window.visualViewport; let raf = 0;
+    const upd = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(() => {
+      const kb = Math.max(0, Math.round(innerHeight - vv.height - vv.offsetTop));
+      navBar.style.transform = kb > 60 ? `translate3d(0,${-kb}px,0)` : '';
+    }); };
+    vv.addEventListener('resize', upd); vv.addEventListener('scroll', upd);
+  }
+  // Fokusirano polje nikad ispod sticky dugmadi / iznad progres bara
+  form.addEventListener('focusin', e => {
+    const t = e.target; if (!t.matches('input[type=text],input[type=email],input[type=tel],textarea')) return;
+    setTimeout(() => {
+      const vh = window.visualViewport ? visualViewport.height : innerHeight;
+      const r = t.getBoundingClientRect(), bottomLimit = vh - navBar.offsetHeight - 12, topLimit = progress.offsetHeight + 12;
+      if (r.bottom > bottomLimit) scrollBy({top: r.bottom - bottomLimit, behavior: reduce ? 'auto' : 'smooth'});
+      else if (r.top < topLimit) scrollBy({top: r.top - topLimit, behavior: reduce ? 'auto' : 'smooth'});
+    }, 320);
+  });
+
+  const smoothTo = y => scrollTo({top: Math.max(0, y), behavior: reduce ? 'auto' : 'smooth'});
+  const formTop = () => card.getBoundingClientRect().top + scrollY - 8;
+
+  const emailOk = v => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
+  const phoneOk = v => (v.replace(/\D/g,'').length >= 6) && /^[+\d\s()\/.-]+$/.test(v);
+
+  function setErr(f){ f.classList.add('has-err'); const i = $('input:not([type=radio]):not([type=checkbox]),textarea', f); if(i) i.setAttribute('aria-invalid','true'); }
+  function clearErr(f){ f.classList.remove('has-err'); const i = $('[aria-invalid]', f); if(i) i.removeAttribute('aria-invalid'); }
+
+  $$('input[required]').forEach(i => i.addEventListener('input', () => { if (i.closest('.f').classList.contains('has-err') && checkInput(i)) clearErr(i.closest('.f')); }));
+
+  function checkInput(i){
+    const v = i.value.trim();
+    if (!v) return false;
+    if (i.type === 'email') return emailOk(v);
+    if (i.type === 'tel') return phoneOk(v);
+    return v.length >= 2;
+  }
+
+  function validate(n){
+    const sec = steps[n-1]; let first = null;
+    $$('input[required]', sec).forEach(i => { const f = i.closest('.f'); if (!checkInput(i)) { setErr(f); first = first || i; } else clearErr(f); });
+    $$('fieldset[data-group]', sec).forEach(fs => { if (!$('input:checked', fs)) { setErr(fs); first = first || $('input', fs); } else clearErr(fs); });
+    if (first) {
+      const f = first.closest('.f');
+      smoothTo(f.getBoundingClientRect().top + scrollY - progress.offsetHeight - 16);
+      // tekstualna polja dobijaju fokus (otvara tastaturu), izbori samo fokus bez skrola
+      first.focus({preventScroll:true});
+      
+    }
+    return !first;
+  }
+
+  function show(n, dir){
+    steps.forEach(s => { s.hidden = +s.dataset.step !== n; s.classList.remove('step-in','step-in-back'); });
+    const s = steps[n-1]; void s.offsetWidth; s.classList.add(dir < 0 ? 'step-in-back' : 'step-in');
+    current = n;
+    $('#stepName').textContent = s.dataset.name;
+    $('#stepCount').textContent = `Korak ${n}/3`;
+    $('#barFill').style.transform = `scaleX(${n/3})`;
+    $('#bar').setAttribute('aria-valuenow', n);
+    $('#bar').setAttribute('aria-valuetext', `Korak ${n} od 3`);
+    backBtn.hidden = n === 1;
+    nextLabel.textContent = n === 3 ? 'Pošalji odgovore' : 'Dalje';
+    hideAlert();
+    if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
+    smoothTo(formTop());
+    $('h2', s).focus({preventScroll:true});
+    syncSticky();
+  }
+
+  backBtn.addEventListener('click', () => { if (!sending && current > 1) show(current - 1, -1); });
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    if (sending) return;
+    if (!validate(current)) return;
+    if (current < 3) return show(current + 1, 1);
+    submit();
+  });
+
+  function hideAlert(){ alertBox.classList.remove('show'); alertBox.textContent=''; }
+
+  function collect(){
+    const fd = new FormData(form), now = new Date();
+    const one = k => (fd.get(k) || '').toString().trim();
+    return {
+      ime_prezime: one('ime_prezime'),
+      agencija: one('agencija'),
+      telefon: one('telefon'),
+      email: one('email'),
+      sajt_instagram: one('sajt_instagram'),
+      broj_vozila: one('broj_vozila'),
+      upita_nedeljno: one('upita_nedeljno'),
+      kanali: fd.getAll('kanali'),
+      ko_odgovara: one('ko_odgovara'),
+      evidencija: one('evidencija'),
+      najvise_vremena: fd.getAll('najvise_vremena'),
+      napomena: one('napomena'),
+      termin_poziva: one('termin_poziva'),
+      poslato_iso: now.toISOString(),
+      poslato_lokalno: now.toLocaleString('sr-Latn-RS', {timeZone:'Europe/Belgrade'}),
+      url_stranice: location.href,
+      param_agencija: pAgencija,
+      param_izvor: pIzvor
+    };
+  }
+
+  function setSending(on){
+    sending = on;
+    nextBtn.disabled = on; backBtn.disabled = on;
+    nextBtn.classList.toggle('loading', on);
+    nextBtn.setAttribute('aria-busy', on ? 'true' : 'false');
+    nextLabel.textContent = on ? 'Šaljem…' : 'Pošalji odgovore';
+  }
+
+  function success(){
+    form.hidden = true;
+    const d = $('#done'); d.hidden = false; d.classList.add('step-in');
+    smoothTo(formTop());
+    $('h2', d).focus({preventScroll:true});
+  }
+
+  async function submit(){
+    hideAlert();
+    if ($('#company_website').value) { success(); return; }
+    setSending(true);
+    try {
+      const res = await fetch(WEBHOOK_URL, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(collect())
+      });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      success();
+    } catch (err) {
+      setSending(false);
+      alertBox.innerHTML = 'Nešto nije u redu, pokušajte ponovo ili me pozovite na <a href="tel:+381649426501">064 9426501</a>';
+      alertBox.classList.add('show');
+    }
+  }
+})();
+</script>
+</body>
+</html>
